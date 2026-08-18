@@ -1,0 +1,105 @@
+﻿@model IEnumerable<JobApplication>
+@{
+    ViewData["Title"] = "My Applications";
+    Layout = "_DriverLayout";
+}
+
+<div class="container mt-4">
+    <h2>My Applications</h2>
+    @if(TempData["SuccessMessage"] != null)
+    {
+        <div class="alert alert-success">
+            @TempData["SuccessMessage"]
+            <button type="button" class="close" aria-label="Close" onclick="this.parentElement.style.display='none';">
+                <span aria-hidden="true">×</span>
+            </button>
+        </div>       
+    }
+    @if (Model.Any())
+    {
+        <div class="table-responsive">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Date Submitted</th>
+                        <th>Position</th>
+                        <th>Status</th>
+                        <th>License Number</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var app in Model)
+                    {
+                        <tr>
+                            <td>@app.DateSubmitted.ToString("dd MMM yyyy")</td>
+                            <td>@app.Vacancy?.Name</td>
+                            <td>
+                                <span class="badge @GetStatusBadgeClass(app.Status)">
+                                    @app.Status
+                                </span>
+                            </td>
+                            <td>@app.LicenseNumber</td>
+                            <td>
+                                <a asp-action="ApplicationDetails" asp-route-id="@app.Id"
+                                   class="btn btn-sm btn-info">
+                                    <i class="fas fa-eye"></i> Details
+                                </a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    }
+    else
+    {
+        <div class="empty-state">
+            <div class="empty-state-icon bg-light">
+                <i class="fas fa-file-alt fa-3x text-muted"></i>
+            </div>
+            <h3 class="empty-state-title">No Applications Found</h3>
+            <p class="empty-state-description">
+                @ViewBag.EmptyMessage
+            </p>
+            @if (ViewBag.ShowBrowseButton)
+            {
+                <a asp-controller="Driver" asp-action="Vacancies" class="btn btn-primary mt-3">
+                    <i class="fas fa-search me-2"></i> Browse Available Positions
+                </a>
+            }
+        </div>
+    }
+</div>
+
+@functions {
+    public string GetStatusBadgeClass(string status)
+    {
+        return status switch
+        {
+            "Accepted" => "bg-success",
+            "Rejected" => "bg-danger",
+            _ => "bg-warning text-dark" 
+        };
+    }
+}
+
+<style>
+    .empty-state {
+        text-align: center;
+        padding: 2rem;
+        margin: 2rem 0;
+        border-radius: 0.5rem;
+        background-color: #f8f9fa;
+    }
+
+    .empty-state-icon {
+        width: 80px;
+        height: 80px;
+        margin: 0 auto 1rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 50%;
+    }
+</style>

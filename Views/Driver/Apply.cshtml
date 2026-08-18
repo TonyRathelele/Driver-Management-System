@@ -1,0 +1,96 @@
+﻿@model TakealotDriverManagementSystem.ViewModels.JobApplicationViewModel
+
+@{
+    ViewData["Title"] = "Driver Application Form";
+    Layout = "_DriverLayout";
+}
+
+<div class="container mt-4">
+    <div class="card application-card">
+        <div class="card-header application-card-header">
+            <h2>@ViewData["Title"]</h2>
+            <h4>@Model.VacancyTitle</h4>
+        </div>
+        <div class="card-body">
+            @if(TempData["ErrorMessage"] != null){
+                <div class="alert alert-danger">
+                    @TempData["ErrorMessage"]
+                    <button type="button" class="close" aria-label="Close" onclick="this.parentElement.style.display='none';">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+            }
+            
+            <form asp-action="Apply" method="post" enctype="multipart/form-data">
+                <input type="hidden" asp-for="VacancyId" />
+                <input type="hidden" asp-for="VacancyTitle" />
+
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+                <div class="row mb-3">
+                    <div class="col-md-6 application-form-element">
+                        <label asp-for="FullName" class="form-label"></label>
+                        <input asp-for="FullName" class="form-control" readonly />
+                    </div>
+                    <div class="col-md-6 application-form-element">
+                        <label asp-for="LicenseNumber" class="form-label"></label>
+                        <input asp-for="LicenseNumber" class="form-control" />
+                        <span asp-validation-for="LicenseNumber" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <div class="mb-3 application-form-element">
+                    <label asp-for="ResumeUpload" class="form-label">Upload Resume (PDF only)</label>
+                    <input type="file" asp-for="ResumeUpload" class="form-control" accept=".pdf" />
+                    <small class="form-text text-muted">Please upload your resume in PDF format (max 5MB).</small>
+                    <span asp-validation-for="ResumeUpload" class="text-danger"></span>
+                </div>
+
+                <div class="form-check mb-3 application-form-element">
+                    <input class="form-check-input" type="checkbox" id="termsCheck" required />
+                    <label class="form-check-label" for="termsCheck">
+                        I certify that the information provided is accurate and complete.
+                    </label>
+                </div>
+
+                <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                    <a asp-action="VacancyDetails" asp-route-id="@Model.VacancyId" class="btn btn-secondary me-md-2">Cancel</a>
+                    <button type="submit" class="btn btn-primary">Submit Application</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+
+    <script>
+        // Client-side validation for file upload
+        document.querySelector('form').addEventListener('submit', function(e) {
+            const fileInput = document.querySelector('input[type="file"]');
+            const termsCheck = document.getElementById('termsCheck');
+
+            if (fileInput.files.length === 0) {
+                e.preventDefault();
+                alert('Please upload your resume.');
+                return;
+            }
+
+            const file = fileInput.files[0];
+            if (file.size > 5 * 1024 * 1024) { // 5MB limit
+                e.preventDefault();
+                alert('File size exceeds 5MB limit.');
+                return;
+            }
+
+            if (!termsCheck.checked) {
+                e.preventDefault();
+                alert('Please certify that the information provided is accurate.');
+                return;
+            }
+        });
+    </script>
+}

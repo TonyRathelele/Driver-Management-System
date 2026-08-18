@@ -1,0 +1,33 @@
+@model VacancyDetailsViewModel
+@{
+    ViewData["Title"] = "Vacancy Details";
+    Layout = "_DriverLayout";
+}
+<div class="container mt-4">
+    @if (TempData["ErrorMessage"] != null)
+    {
+        <div class="alert alert-danger">@TempData["ErrorMessage"]</div>
+    }
+    <div class="card shadow-sm">
+        <div class="card-header">
+            <h2 class="mb-1">@Model.Vacancy.Name</h2>
+            <div class="text-muted"><i class="fas fa-warehouse me-1"></i>@Model.Vacancy.Warehouse?.Name</div>
+        </div>
+        <div class="card-body">
+            <h5>Position Description</h5>
+            <p>@Model.Vacancy.Description</p>
+            <p><strong>Location:</strong> @Model.Vacancy.Warehouse?.Address</p>
+            <div class="mt-4">
+                @if (Model.HasApplied)
+                {
+                    <div class="alert alert-info">You have already applied for this vacancy.</div>
+                }
+                else
+                {
+                    <a asp-action="Apply" asp-route-id="@Model.Vacancy.Id" class="btn btn-primary">Apply Now</a>
+                }
+                <a asp-action="Vacancies" class="btn btn-secondary">Back to Vacancies</a>
+            </div>
+        </div>
+    </div>
+</div>

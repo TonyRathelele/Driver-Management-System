@@ -1,0 +1,176 @@
+﻿@model Vehicle
+@{
+    ViewData["Title"] = "Assigned Vehicle";
+    Layout = "_DriverLayout";
+}
+
+<div class="vehicle-details-container">
+    <h1>@ViewData["Title"]</h1>
+
+    @if (TempData["AssignedVehicle"]?.ToString() == "False")
+    {
+        <div class="alert alert-info">
+            <i class="fas fa-info-circle"></i>
+            <span>No vehicle has currently been assigned to you. Please check back later or contact your manager.</span>
+        </div>
+    }
+    else if (Model == null)
+    {
+        <div class="alert alert-warning">
+            <i class="fas fa-exclamation-triangle"></i>
+            <span>Vehicle information is not available.</span>
+        </div>
+    }
+    else
+    {
+        <div class="vehicle-card">
+            <div class="card">
+                <div class="card-header">
+                    <h3>Vehicle Information</h3>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <!-- Vehicle Image -->
+                            @if (!string.IsNullOrEmpty(Model.VehicleImagePath))
+                            {
+                                <div class="vehicle-image-container">
+                                    <img src="~/@Model.VehicleImagePath" alt="@Model.Make @Model.Model" class="vehicle-image" />
+                                </div>
+                            }
+                            else
+                            {
+                                <div class="vehicle-image-placeholder">
+                                    <i class="fas fa-truck"></i>
+                                    <span>No image available</span>
+                                </div>
+                            }
+                        </div>
+
+                        <div class="col-md-6">
+                            <!-- Vehicle Details -->
+                            <div class="vehicle-details">
+                                <div class="detail-row">
+                                    <span class="detail-label">Make:</span>
+                                    <span class="detail-value">@Model.Make</span>
+                                </div>
+
+                                <div class="detail-row">
+                                    <span class="detail-label">Model:</span>
+                                    <span class="detail-value">@Model.Model</span>
+                                </div>
+
+                                <div class="detail-row">
+                                    <span class="detail-label">License Plate:</span>
+                                    <span class="detail-value badge badge-primary">@Model.LicensePlate</span>
+                                </div>
+
+                                <div class="detail-row">
+                                    <span class="detail-label">Vehicle ID:</span>
+                                    <span class="detail-value">@Model.Id</span>
+                                </div>
+
+                                @if (Model.Warehouse != null)
+                                {
+                                    <div class="detail-row">
+                                        <span class="detail-label">Assigned Warehouse:</span>
+                                        <span class="detail-value">@Model.Warehouse.Name</span>
+                                    </div>
+
+                                    <div class="detail-row">
+                                        <span class="detail-label">Warehouse Address:</span>
+                                        <span class="detail-value">@Model.Warehouse.Address</span>
+                                    </div>
+                                }
+
+                                <div class="detail-row">
+                                    <span class="detail-label">Assignment Status:</span>
+                                    <span class="detail-value badge badge-success">Currently Assigned</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Vehicle Status Information -->
+        <div class="vehicle-status mt-4">
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="status-card">
+                        <div class="status-icon">
+                            <i class="fas fa-check-circle"></i>
+                        </div>
+                        <div class="status-content">
+                            <h3>Active</h3>
+                            <p>Vehicle Status</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="status-card">
+                        <div class="status-icon">
+                            <i class="fas fa-warehouse"></i>
+                        </div>
+                        <div class="status-content">
+                            <h3>@(Model.Warehouse?.Name ?? "Unknown")</h3>
+                            <p>Home Warehouse</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="status-card">
+                        <div class="status-icon">
+                            <i class="fas fa-id-card-alt"></i>
+                        </div>
+                        <div class="status-content">
+                            <h3>@Model.LicensePlate</h3>
+                            <p>License Plate</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Quick Actions -->
+        <div class="quick-actions mt-4">
+            <div class="card">
+                <div class="card-header">
+                    <h4>Quick Actions</h4>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-3">
+                            <button class="btn btn-outline-primary btn-block action-btn">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Report Issue</span>
+                            </button>
+                        </div>
+                        <div class="col-md-3">
+                            <button class="btn btn-outline-success btn-block action-btn">
+                                <i class="fas fa-gas-pump"></i>
+                                <span>Fuel Log</span>
+                            </button>
+                        </div>
+                        <div class="col-md-3">
+                            <button class="btn btn-outline-info btn-block action-btn">
+                                <i class="fas fa-tools"></i>
+                                <span>Maintenance</span>
+                            </button>
+                        </div>
+                        <div class="col-md-3">
+                            <button class="btn btn-outline-warning btn-block action-btn">
+                                <i class="fas fa-phone"></i>
+                                <span>Contact Support</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+

@@ -1,0 +1,21 @@
+﻿@model TakealotDriverManagementSystem.Models.Notification
+
+@{
+    ViewData["Title"] = "Notification Details";
+    Layout = "_DriverLayout";
+}
+
+<div class="container mt-4">
+    <div class="card shadow-sm">
+        <div class="card-body">
+            <h4 class="card-title">Notification</h4>
+            <p class="card-text">@Html.Raw(Model.Message)</p>
+            <small class="text-muted">
+                <i class="bi bi-clock"></i> @Model.CreatedAt.ToLocalTime().ToString("yyyy-MM-dd HH:mm")
+            </small>
+            <div class="mt-3">
+                <a asp-action="Notifications" class="btn btn-secondary btn-sm">Back to Notifications</a>
+            </div>
+        </div>
+    </div>
+</div>
