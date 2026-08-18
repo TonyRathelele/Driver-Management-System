@@ -1,4 +1,4 @@
-# Takealot Driver Management System
+# Driver Management System
 
 ASP.NET Core MVC application for driver vacancies, applications, vehicles, profiles and notifications.
 
