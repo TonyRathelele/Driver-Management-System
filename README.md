@@ -1,5 +1,8 @@
 # Driver Management System
 
+**Richfield College of Southern Africa**
+**Semester 2 — ASP.NET Development**
+
 ASP.NET Core MVC application for driver vacancies, applications, vehicles, profiles and notifications.
 
 ## Requirements
